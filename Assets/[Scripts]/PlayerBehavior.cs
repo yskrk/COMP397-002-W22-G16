@@ -5,11 +5,17 @@ using UnityEngine;
 public class PlayerBehavior : MonoBehaviour
 {
 	public CharacterController controller;
+	public CameraController cameraController;
 
 	[Header("Movement")]
 	public float maxSpeed = 10.0f;
 	public float gravity = -30.0f;
 	public float jumpHeight = 3.0f;
+	public float maximumUpwardVelocity = 30f;
+	public float maximumDownwardVelocity = -50f;
+	public float accelerationFactor = 3f;
+	public float groundedDecelerationFactor = 4f;
+	public float aerialDecelerationFactor = 2f;
 	public Vector3 velocity;
 
 	[Header("Ground Detection")]
@@ -17,6 +23,15 @@ public class PlayerBehavior : MonoBehaviour
 	public float groundRadius = 0.5f;
 	public LayerMask groundMask;
 	public bool isGrounded;
+
+	public Vector3 FacingDirection
+	{
+		get
+		{
+			float cameraPitch = cameraController.transform.eulerAngles.x;
+			return Quaternion.Euler(cameraPitch, 0, 0) * Vector3.forward;
+		}
+	}
 
 	void Start()
 	{
@@ -28,13 +43,27 @@ public class PlayerBehavior : MonoBehaviour
 		isGrounded = Physics.CheckSphere(groundCheck.position, groundRadius, groundMask);
 
 		velocity.y = ConstrainGroundedVelocityY(isGrounded, velocity.y);
+		velocity.y = Mathf.Clamp(velocity.y, maximumDownwardVelocity, maximumUpwardVelocity);
 
-		float inputX = Input.GetAxisRaw("Horizontal");
-		float inputZ = Input.GetAxisRaw("Vertical");
+		Vector2 moveInput = new(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+		moveInput = moveInput.normalized;
 
-		// Need to use a different factor for acceleration and deceleration, 0.1f is good for acceleration
-		velocity.x = Mathf.Lerp(velocity.x, maxSpeed * inputX, 0.01f);
-		velocity.z = Mathf.Lerp(velocity.z, maxSpeed * inputZ, 0.01f);
+		float interpolationFactor;
+		if (moveInput.sqrMagnitude != 0)
+		{
+			interpolationFactor = accelerationFactor;
+		}
+		else if (isGrounded)
+		{
+			interpolationFactor = groundedDecelerationFactor;
+		}
+		else
+		{
+			interpolationFactor = aerialDecelerationFactor;
+		}
+
+		velocity.x = Mathf.Lerp(velocity.x, maxSpeed * moveInput.x, interpolationFactor * Time.deltaTime);
+		velocity.z = Mathf.Lerp(velocity.z, maxSpeed * moveInput.y, interpolationFactor * Time.deltaTime);
 
 		if (Input.GetButton("Jump") && isGrounded)
 		{
@@ -43,7 +72,6 @@ public class PlayerBehavior : MonoBehaviour
 
 		velocity.y += gravity * Time.deltaTime;
 
-		// This rotation thing doesn't work when dealing with other things affecting velocity, need to change approach
 		controller.Move(RotateHorizontalVelocity(transform, velocity) * Time.deltaTime);
 	}
 
