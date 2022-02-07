@@ -97,7 +97,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 119
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -130,7 +130,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mouseSensitivity: 10
-  playerBody: {fileID: 0}
+  playerTransform: {fileID: 2337048250096090447}
 --- !u!1 &4587817573362429479
 GameObject:
   m_ObjectHideFlags: 0
@@ -249,15 +249,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 7963496051989308096}
+  cameraController: {fileID: 4618409729334760857}
   maxSpeed: 10
   gravity: -30
   jumpHeight: 3
+  maximumUpwardVelocity: 30
+  maximumDownwardVelocity: -50
+  accelerationFactor: 3
+  groundedDecelerationFactor: 4
+  aerialDecelerationFactor: 2
   velocity: {x: 0, y: 0, z: 0}
-  groundCheck: {fileID: 0}
+  groundCheck: {fileID: 8116713230808001998}
   groundRadius: 0.5
   groundMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   isGrounded: 0
 --- !u!1001 &444983691313604942
 PrefabInstance:
@@ -343,5 +349,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 6505996268925091773}
-  cameraTransform: {fileID: 3600955060052825638}
-  knockbackAmount: 80
+  knockbackAmount: 30

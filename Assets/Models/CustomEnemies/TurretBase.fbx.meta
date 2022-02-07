@@ -1,24 +1,9 @@
 fileFormatVersion: 2
-guid: 874fe2caaa15bf4ac8a8df9ff28a62a0
+guid: e5a1a2009a201f2928664ae573078719
 ModelImporter:
   serializedVersion: 21202
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Bouncy Area
-    second: {fileID: 2100000, guid: 254188b7dddf54727a93d5e1050a4323, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Inner Glow
-    second: {fileID: 2100000, guid: fb340c67d489937cd81454849e6d66a8, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Outer Platform
-    second: {fileID: 2100000, guid: dfa3b28666440f946b6078250b19db65, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -47,7 +32,7 @@ ModelImporter:
     extraExposedTransformPaths: []
     extraUserProperties: []
     clipAnimations: []
-    isReadable: 1
+    isReadable: 0
   meshes:
     lODScreenPercentages: []
     globalScale: 1
@@ -62,7 +47,7 @@ ModelImporter:
     nodeNameCollisionStrategy: 1
     fileIdsGeneration: 2
     swapUVChannels: 0
-    generateSecondaryUV: 1
+    generateSecondaryUV: 0
     useFileUnits: 1
     keepQuads: 0
     weldVertices: 1
