@@ -836,6 +836,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 474504502}
     - target: {fileID: 1536911378991948835, guid: d621c17a0246b748fbc1e92c8ce0be21, type: 3}
+      propertyPath: crosshairDotImage
+      value: 
+      objectReference: {fileID: 2800000, guid: 350e1f73b9e48ad54bf7d8fa6993df3a, type: 3}
+    - target: {fileID: 1536911378991948835, guid: d621c17a0246b748fbc1e92c8ce0be21, type: 3}
       propertyPath: crosshairDotEmptyImage
       value: 
       objectReference: {fileID: 2800000, guid: 350e1f73b9e48ad54bf7d8fa6993df3a, type: 3}
