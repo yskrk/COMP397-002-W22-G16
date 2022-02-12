@@ -10,6 +10,7 @@
  * 2022-02-01 - Refactor and clean up shotgun movement logic
  * 2022-02-10 - Add shotgun ammo functionality
  * 2022-02-12 - Documentation comments
+ * 2022-02-12 - Shotgun SFX
  */
 
 using System.Collections;
@@ -26,12 +27,22 @@ public class ShotgunController : MonoBehaviour
 	public Texture crosshairDotImage;
 	public Texture crosshairDotFilledImage;
 
+	public AudioClip fireSound;
+	public AudioClip reloadSound;
+
 	public float knockbackAmount = 150.0f;
 
 	private const int totalShots = 2;
 	private int remainingShots = 2;
 	private float rechargeTimerStart = 0;
 	public float rechargeDelayLength = 3f;
+
+	private AudioSource audioSource;
+
+	void Start()
+	{
+		audioSource = GetComponent<AudioSource>();
+	}
 
 	void Update()
 	{
@@ -40,7 +51,8 @@ public class ShotgunController : MonoBehaviour
 		{
 			remainingShots = totalShots;
 
-			updateAmmoDisplay(remainingShots);
+			UpdateAmmoDisplay(remainingShots);
+			PlayReloadSound();
 		}
 
 		// When you have ammo and click left mouse, give knockback, subtract 1 ammo, and update the ammo display
@@ -50,12 +62,13 @@ public class ShotgunController : MonoBehaviour
 
 			rechargeTimerStart = Time.time;
 			remainingShots -= 1;
-			updateAmmoDisplay(remainingShots);
+			UpdateAmmoDisplay(remainingShots);
+			PlayFireSound();
 		}
 	}
 
 	// Assign the correct crossHair dot images based on the amount of remaining ammo 
-	private void updateAmmoDisplay(int newAmmoAmount)
+	private void UpdateAmmoDisplay(int newAmmoAmount)
 	{
 		switch (newAmmoAmount)
 		{
@@ -72,5 +85,20 @@ public class ShotgunController : MonoBehaviour
 				crosshairDot2.texture = crosshairDotImage;
 				break;
 		}
+	}
+
+	private void PlayFireSound()
+	{
+		// if (audioSource.isPlaying) {
+		// 	audioSource.Stop();
+		// }
+		audioSource.clip = fireSound;
+		audioSource.Play();
+	}
+
+	private void PlayReloadSound()
+	{
+		audioSource.clip = reloadSound;
+		audioSource.Play();
 	}
 }
