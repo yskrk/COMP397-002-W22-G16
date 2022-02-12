@@ -9,6 +9,7 @@
  * Revision History:
  * 2022-02-10 - Initial Creation
  * 2022-02-12 - Documentation comments
+ * 2022-02-12 - Bounce Sound
  */
 
 using System.Collections;
@@ -19,6 +20,12 @@ using UnityEngine;
 public class BounceAreaController : MonoBehaviour
 {
 	public float bounceForce = 50f;
+	private AudioSource audioSource;
+
+	void Start()
+	{
+		audioSource = GetComponent<AudioSource>();
+	}
 
 	// Handle the logic that occurs when the player enters the bounce area trigger
 	private void OnTriggerEnter(Collider collider)
@@ -29,6 +36,13 @@ public class BounceAreaController : MonoBehaviour
 		if (player != null)
 		{
 			player.velocity.y = bounceForce;
+
+			PlayBounceSound();
 		}
+	}
+
+	private void PlayBounceSound()
+	{
+		audioSource.Play();
 	}
 }

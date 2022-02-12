@@ -103,14 +103,14 @@ public class PlayerBehavior : MonoBehaviour
 			velocity.y = CalculateJumpForce(jumpHeight, gravity);
 
 			// Only play jump sound if landing sound has played most of the clip already
-			if (audioSource.clip != landSound || audioSource.time > 0.5f || !audioSource.isPlaying)
+			if (audioSource.clip != landSound || audioSource.time > 0.4f || !audioSource.isPlaying)
 			{
 				PlayJumpSound();
 			}
 		}
 
 		// Player just landed and landing sound isn't already playing or has played most of its noise, play landing sound
-		if (isGrounded && !previousIsGrounded && (audioSource.clip != landSound || audioSource.time > 0.5f || !audioSource.isPlaying))
+		if (isGrounded && !previousIsGrounded && (audioSource.clip != landSound || audioSource.time > 0.4f || !audioSource.isPlaying))
 		{
 			PlayLandSound();
 		}
