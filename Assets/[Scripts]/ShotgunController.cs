@@ -87,15 +87,14 @@ public class ShotgunController : MonoBehaviour
 		}
 	}
 
+	// Play the shotgun firing sound
 	private void PlayFireSound()
 	{
-		// if (audioSource.isPlaying) {
-		// 	audioSource.Stop();
-		// }
 		audioSource.clip = fireSound;
 		audioSource.Play();
 	}
 
+	// Play the shotgun reloading sound
 	private void PlayReloadSound()
 	{
 		audioSource.clip = reloadSound;

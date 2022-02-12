@@ -9,6 +9,7 @@
  * 2022-01-28 - Initial Creation, basic unfinished movement
  * 2022-02-01 - Further polish, more configuration options, and finalized movement code
  * 2022-02-12 - Documentation comments
+ * 2022-02-12 - Player Jump / Land Sounds
  */
 
 using System.Collections;
@@ -31,12 +32,18 @@ public class PlayerBehavior : MonoBehaviour
 	public float groundedDecelerationFactor = 4f;
 	public float aerialDecelerationFactor = 2f;
 	public Vector3 velocity;
+	private bool previousIsGrounded;
 
 	[Header("Ground Detection")]
 	public Transform groundCheck;
 	public float groundRadius = 0.5f;
 	public LayerMask groundMask;
 	public bool isGrounded;
+
+	[Header("Sound Effects")]
+	private AudioSource audioSource;
+	public AudioClip jumpSound;
+	public AudioClip landSound;
 
 	// Returns a vector that points in the direction the player is looking, factoring in the camera as well
 	public Vector3 FacingDirection
@@ -52,11 +59,15 @@ public class PlayerBehavior : MonoBehaviour
 	{
 		// Get a reference to the character controller for later use
 		characterController = GetComponent<CharacterController>();
+
+		// Get a reference to the audio source for later use
+		audioSource = GetComponent<AudioSource>();
 	}
 
 	void Update()
 	{
 		// Run ground check logic (needed as unity's built in ground check isn't very consistent)
+		previousIsGrounded = isGrounded;
 		isGrounded = Physics.CheckSphere(groundCheck.position, groundRadius, groundMask);
 
 		// Keep the player from building infinite speed when they're standing on the ground, and also add a terminal vertical velocity
@@ -90,6 +101,18 @@ public class PlayerBehavior : MonoBehaviour
 		if (Input.GetButton("Jump") && isGrounded)
 		{
 			velocity.y = CalculateJumpForce(jumpHeight, gravity);
+
+			// Only play jump sound if landing sound has played most of the clip already
+			if (audioSource.clip != landSound || audioSource.time > 0.5f || !audioSource.isPlaying)
+			{
+				PlayJumpSound();
+			}
+		}
+
+		// Player just landed and landing sound isn't already playing or has played most of its noise, play landing sound
+		if (isGrounded && !previousIsGrounded && (audioSource.clip != landSound || audioSource.time > 0.5f || !audioSource.isPlaying))
+		{
+			PlayLandSound();
 		}
 
 		// Apply gravity to the velocity
@@ -122,5 +145,19 @@ public class PlayerBehavior : MonoBehaviour
 	static Vector3 RotateHorizontalVelocity(Transform transform, Vector3 velocity)
 	{
 		return new Vector3(0, velocity.y, 0) + transform.right * velocity.x + transform.forward * velocity.z;
+	}
+
+	// Plays the player jump sound
+	void PlayJumpSound()
+	{
+		audioSource.clip = jumpSound;
+		audioSource.Play();
+	}
+
+	// Plays the player land sound
+	void PlayLandSound()
+	{
+		audioSource.clip = landSound;
+		audioSource.Play();
 	}
 }
