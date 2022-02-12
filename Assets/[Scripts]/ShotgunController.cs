@@ -1,8 +1,23 @@
+/*
+ * ShotgunController.cs
+ * Joshua Eagles - 301078033
+ * Last Modified: 2022-02-10
+ * 
+ * Handles the logic for the shotgun, both the knockback blast needed for movement and the ammo system.
+ * 
+ * Revision History:
+ * 2022-01-28 - Initial Creation, basic unfinished shotgun movement logic
+ * 2022-02-01 - Refactor and clean up shotgun movement logic
+ * 2022-02-10 - Add shotgun ammo functionality
+ * 2022-02-12 - Documentation comments
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// Handles the logic for the shotgun, both the knockback blast needed for movement and the ammo system
 public class ShotgunController : MonoBehaviour
 {
 	public PlayerBehavior player;
@@ -20,6 +35,7 @@ public class ShotgunController : MonoBehaviour
 
 	void Update()
 	{
+		// If there's ammo to reload and the timer has completed, refill the shotgun ammo and update the ammo display
 		if (remainingShots < totalShots && Time.time > rechargeTimerStart + rechargeDelayLength)
 		{
 			remainingShots = totalShots;
@@ -27,6 +43,7 @@ public class ShotgunController : MonoBehaviour
 			updateAmmoDisplay(remainingShots);
 		}
 
+		// When you have ammo and click left mouse, give knockback, subtract 1 ammo, and update the ammo display
 		if (Input.GetMouseButtonDown(0) && remainingShots > 0)
 		{
 			player.velocity += -player.FacingDirection * knockbackAmount;
@@ -37,7 +54,7 @@ public class ShotgunController : MonoBehaviour
 		}
 	}
 
-	// If we add more weapons something like this should be handled by a script attached to the crosshair
+	// Assign the correct crossHair dot images based on the amount of remaining ammo 
 	private void updateAmmoDisplay(int newAmmoAmount)
 	{
 		switch (newAmmoAmount)
