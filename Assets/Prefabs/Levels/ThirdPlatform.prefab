@@ -4801,8 +4801,8 @@ GameObject:
   - component: {fileID: 5678917337038948258}
   - component: {fileID: 5678917337038948261}
   m_Layer: 0
-  m_Name: Unvisible Barrier
-  m_TagString: Untagged
+  m_Name: Top border
+  m_TagString: Border
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4846,8 +4846,8 @@ GameObject:
   - component: {fileID: 5678917337054238188}
   - component: {fileID: 5678917337054238191}
   m_Layer: 0
-  m_Name: Unvisible Barrier
-  m_TagString: Untagged
+  m_Name: Top border
+  m_TagString: Border
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
