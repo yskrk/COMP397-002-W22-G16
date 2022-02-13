@@ -1,7 +1,7 @@
 /*
  * ShotgunController.cs
  * Joshua Eagles - 301078033
- * Last Modified: 2022-02-10
+ * Last Modified: 2022-02-12
  * 
  * Handles the logic for the shotgun, both the knockback blast needed for movement and the ammo system.
  * 

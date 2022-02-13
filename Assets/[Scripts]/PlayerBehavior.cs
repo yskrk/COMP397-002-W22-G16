@@ -1,7 +1,7 @@
 /*
  * PlayerBehavior.cs
  * Joshua Eagles - 301078033
- * Last Modified: 2022-02-01
+ * Last Modified: 2022-02-12
  * 
  * Handles the logic for the player moving around and jumping
  * 

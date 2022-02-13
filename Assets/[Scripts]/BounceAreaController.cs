@@ -1,7 +1,7 @@
 /*
  * BounceAreaController.cs
  * Joshua Eagles - 301078033
- * Last Modified: 2022-02-10
+ * Last Modified: 2022-02-12
  * 
  * Handles the logic for the bouncy platforms, giving the player a big vertical
  * boost when they land on it.
