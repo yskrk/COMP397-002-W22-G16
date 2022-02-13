@@ -56,7 +56,7 @@ public class ShotgunController : MonoBehaviour
 		}
 
 		// When you have ammo and click left mouse, give knockback, subtract 1 ammo, and update the ammo display
-		if (Input.GetMouseButtonDown(0) && remainingShots > 0)
+		if (Input.GetButtonDown("Fire") && remainingShots > 0)
 		{
 			player.velocity += -player.FacingDirection * knockbackAmount;
 
