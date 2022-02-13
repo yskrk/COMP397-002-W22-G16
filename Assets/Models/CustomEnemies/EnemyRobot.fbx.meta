@@ -3,7 +3,32 @@ guid: f15943f35864db3db9fc0aae66868dc6
 ModelImporter:
   serializedVersion: 21202
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BodyMaterial
+    second: {fileID: 2100000, guid: 0b33c0dcd42018436a93dafcdbe50cc5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BowTieMaterial
+    second: {fileID: 2100000, guid: 30db621da223cea7c8a0030ccd0383de, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: EyeMaterial
+    second: {fileID: 2100000, guid: e07d25f6d5990b9f7934485bfd73631c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: FloatGlow
+    second: {fileID: 2100000, guid: 3874c4effdd17471f9a53d723dfbe382, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GunMaterial
+    second: {fileID: 2100000, guid: 67aa4c2ff3bf20ec3af2235f36dde263, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
