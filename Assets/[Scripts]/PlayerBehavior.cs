@@ -1,7 +1,7 @@
 /*
  * PlayerBehavior.cs
  * Joshua Eagles - 301078033
- * Last Modified: 2022-02-12
+ * Last Modified: 2022-03-05
  * 
  * Handles the logic for the player moving around and jumping
  * 
@@ -10,6 +10,7 @@
  * 2022-02-01 - Further polish, more configuration options, and finalized movement code
  * 2022-02-12 - Documentation comments
  * 2022-02-12 - Player Jump / Land Sounds
+ * 2022-03-05 - Health Bar Logic
  */
 
 using System.Collections;
@@ -44,6 +45,9 @@ public class PlayerBehavior : MonoBehaviour
 	private AudioSource audioSource;
 	public AudioClip jumpSound;
 	public AudioClip landSound;
+
+	[Header("Health System")]
+	public GameplayUIControls uIControls;
 
 	// Returns a vector that points in the direction the player is looking, factoring in the camera as well
 	public Vector3 FacingDirection
@@ -159,5 +163,11 @@ public class PlayerBehavior : MonoBehaviour
 	{
 		audioSource.clip = landSound;
 		audioSource.Play();
+	}
+
+	// TODO: Add a sound to this
+	public void TakeDamage(int damage)
+	{
+		uIControls.TakeDamage(damage);
 	}
 }

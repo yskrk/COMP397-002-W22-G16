@@ -268,6 +268,7 @@ MonoBehaviour:
   isGrounded: 0
   jumpSound: {fileID: 8300000, guid: 7f4bb31f06728be4ba0bed5c2641896c, type: 3}
   landSound: {fileID: 8300000, guid: 5e94f3d51023c5446b59f52c71e0cade, type: 3}
+  uIControls: {fileID: 0}
 --- !u!82 &1580949692
 AudioSource:
   m_ObjectHideFlags: 0

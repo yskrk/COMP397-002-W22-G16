@@ -582,7 +582,7 @@ GameObject:
   - component: {fileID: 724571376}
   - component: {fileID: 724571375}
   m_Layer: 5
-  m_Name: GameOverLabel
+  m_Name: WinLabel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -628,7 +628,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: GAME OVER
+  m_text: YOU WIN
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 8bf2de08430557eebbe0951750866a1a, type: 2}
@@ -637,8 +637,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281614591
-  m_fontColor: {r: 1, g: 0.24961711, b: 0.2028302, a: 1}
+    rgba: 4281859892
+  m_fontColor: {r: 0.20392156, g: 1, b: 0.21480013, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
