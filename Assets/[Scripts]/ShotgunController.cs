@@ -106,7 +106,7 @@ public class ShotgunController : MonoBehaviour
 
 	private void CheckForHitEnemies()
 	{
-		bool isHit = Physics.Raycast(player.transform.position, player.FacingDirection, out RaycastHit hit, 10f, LayerMask.GetMask("Ground", "Enemy"));
+		bool isHit = Physics.Raycast(player.transform.position, player.transform.forward, out RaycastHit hit, 10f, LayerMask.GetMask("Ground", "Enemy"));
 		if (isHit && hit.collider.gameObject.CompareTag("Enemy"))
 		{
 			Destroy(hit.collider.gameObject);
