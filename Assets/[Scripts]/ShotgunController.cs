@@ -11,6 +11,7 @@
  * 2022-02-10 - Add shotgun ammo functionality
  * 2022-02-12 - Documentation comments
  * 2022-02-12 - Shotgun SFX
+ * 2022-03-06 - Shoot and destroy enemies
  */
 
 using System.Collections;
@@ -64,6 +65,8 @@ public class ShotgunController : MonoBehaviour
 			remainingShots -= 1;
 			UpdateAmmoDisplay(remainingShots);
 			PlayFireSound();
+
+			CheckForHitEnemies();
 		}
 	}
 
@@ -99,5 +102,14 @@ public class ShotgunController : MonoBehaviour
 	{
 		audioSource.clip = reloadSound;
 		audioSource.Play();
+	}
+
+	private void CheckForHitEnemies()
+	{
+		bool isHit = Physics.Raycast(player.transform.position, player.FacingDirection, out RaycastHit hit, 10f, LayerMask.GetMask("Ground", "Enemy"));
+		if (isHit && hit.collider.gameObject.CompareTag("Enemy"))
+		{
+			Destroy(hit.collider.gameObject);
+		}
 	}
 }

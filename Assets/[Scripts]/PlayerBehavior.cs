@@ -11,6 +11,7 @@
  * 2022-02-12 - Documentation comments
  * 2022-02-12 - Player Jump / Land Sounds
  * 2022-03-05 - Health Bar Logic
+ * 2022-03-06 - Saving/Loading
  */
 
 using System.Collections;
@@ -47,7 +48,7 @@ public class PlayerBehavior : MonoBehaviour
 	public AudioClip landSound;
 
 	[Header("Health System")]
-	public GameplayUIControls uIControls;
+	public GameplayUIControls uiControls;
 
 	// Returns a vector that points in the direction the player is looking, factoring in the camera as well
 	public Vector3 FacingDirection
@@ -165,9 +166,14 @@ public class PlayerBehavior : MonoBehaviour
 		audioSource.Play();
 	}
 
-	// TODO: Add a sound to this
 	public void TakeDamage(int damage)
 	{
-		uIControls.TakeDamage(damage);
+		uiControls.TakeDamage(damage);
+	}
+
+	public void LoadEntity(SaveData saveData)
+	{
+		transform.position = new Vector3(saveData.playerPositionX, saveData.playerPositionY, saveData.playerPositionZ);
+		transform.rotation = Quaternion.Euler(0, saveData.playerRotationY, 0);
 	}
 }

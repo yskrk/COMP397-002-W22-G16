@@ -7,11 +7,13 @@
  *
  * Revision History:
  * 2022-02-13 - Initial Creation
- * 2022-03-05 - Health Bar Logic
+ * 2022-03-05 - Health Bar Logic + Medkit logic
+ * 2022-03-06 - Saving and Loading
  */
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -28,6 +30,9 @@ public class GameplayUIControls : MonoBehaviour
 	public Slider healthBar;
 	public TMP_Text healthBarValueLabel;
 
+	private int medKitCount;
+	public TMP_Text medkitDisplayLabel;
+
 	void Update()
 	{
 		// Handle the player pressing the pause button
@@ -35,6 +40,11 @@ public class GameplayUIControls : MonoBehaviour
 		{
 			IsPaused = !IsPaused;
 			ChangePausedState(IsPaused);
+		}
+
+		if (Input.GetButtonDown("Medkit"))
+		{
+			UseMedKit();
 		}
 	}
 
@@ -57,12 +67,34 @@ public class GameplayUIControls : MonoBehaviour
 
 	public void OnSaveGameButton_Pressed()
 	{
-		// Functionality will be added in part 3
+		var playerBehavior = Resources.FindObjectsOfTypeAll<PlayerBehavior>()[0];
+		var playerTransform = playerBehavior.gameObject.transform;
+
+		SaveData saveData = new(playerTransform.position.x, playerTransform.position.y, playerTransform.position.z,
+				playerBehavior.transform.rotation.eulerAngles.y, medKitCount, (int)healthBar.value);
+
+		string serializedSaveData = JsonUtility.ToJson(saveData);
+
+		PlayerPrefs.SetString("SaveData", serializedSaveData);
 	}
 
 	public void OnLoadGameButton_Pressed()
 	{
-		// Functionality will be added in part 3
+		if (!PlayerPrefs.HasKey("SaveData"))
+		{
+			return;
+		}
+
+		var serializedSaveData = PlayerPrefs.GetString("SaveData");
+		var saveData = JsonUtility.FromJson<SaveData>(serializedSaveData);
+
+		var playerBehavior = Resources.FindObjectsOfTypeAll<PlayerBehavior>()[0];
+		playerBehavior.LoadEntity(saveData);
+
+		medKitCount = saveData.medkitInventoryCount;
+		medkitDisplayLabel.text = medKitCount.ToString();
+
+		healthBar.value = saveData.health;
 	}
 
 	public void OnExitToMenu_Pressed()
@@ -85,5 +117,47 @@ public class GameplayUIControls : MonoBehaviour
 		}
 
 		healthBarValueLabel.text = healthBar.value.ToString();
+	}
+
+	public void Heal(int healAmount)
+	{
+		healthBar.value += healAmount;
+	}
+
+	public void AddMedKit()
+	{
+		medKitCount++;
+		medkitDisplayLabel.text = medKitCount.ToString();
+	}
+
+	public void UseMedKit()
+	{
+		if (medKitCount <= 0)
+		{
+			return;
+		}
+		medKitCount--;
+		Heal(100);
+		medkitDisplayLabel.text = medKitCount.ToString();
+	}
+}
+
+public class SaveData
+{
+	public float playerPositionX;
+	public float playerPositionY;
+	public float playerPositionZ;
+	public float playerRotationY;
+	public int medkitInventoryCount;
+	public int health;
+
+	public SaveData(float playerPositionX, float playerPositionY, float playerPositionZ, float playerRotationY, int medkitInventoryCount, int health)
+	{
+		this.playerPositionX = playerPositionX;
+		this.playerPositionY = playerPositionY;
+		this.playerPositionZ = playerPositionZ;
+		this.playerRotationY = playerRotationY;
+		this.medkitInventoryCount = medkitInventoryCount;
+		this.health = health;
 	}
 }
