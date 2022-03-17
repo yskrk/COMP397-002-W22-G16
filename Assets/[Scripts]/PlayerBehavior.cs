@@ -12,6 +12,8 @@
  * 2022-02-12 - Player Jump / Land Sounds
  * 2022-03-05 - Health Bar Logic
  * 2022-03-06 - Saving/Loading
+ * 2022-03-15 - Using Left and Right Joystick
+ * 2022-03-15 - Adding A Button ..
  */
 
 using System.Collections;
@@ -50,6 +52,9 @@ public class PlayerBehavior : MonoBehaviour
 	[Header("Health System")]
 	public GameplayUIControls uiControls;
 
+	[Header("OnScreen Controls")]
+	public Joystick leftJoystick;
+
 	// Returns a vector that points in the direction the player is looking, factoring in the camera as well
 	public Vector3 FacingDirection
 	{
@@ -80,7 +85,11 @@ public class PlayerBehavior : MonoBehaviour
 		velocity.y = Mathf.Clamp(velocity.y, maximumDownwardVelocity, maximumUpwardVelocity);
 
 		// Get the movement input information and normalize it so diagonals don't make you move fasters
-		Vector2 moveInput = new(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+	    /*Vector2 moveInput = new(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+		moveInput = moveInput.normalized;*/
+
+		//Oncreen Joystick
+		Vector2 moveInput = new(Input.GetAxisRaw("Horizontal")+leftJoystick.Horizontal, Input.GetAxisRaw("Vertical")+leftJoystick.Vertical);
 		moveInput = moveInput.normalized;
 
 		// Use a different velocity interpolation factor based on the current state of the player (improves movement feel)
@@ -175,5 +184,13 @@ public class PlayerBehavior : MonoBehaviour
 	{
 		transform.position = new Vector3(saveData.playerPositionX, saveData.playerPositionY, saveData.playerPositionZ);
 		transform.rotation = Quaternion.Euler(0, saveData.playerRotationY, 0);
+	}
+
+	public void onAButton_Pressed() 
+	{
+		if (isGrounded) 
+		{
+			velocity.y = CalculateJumpForce(jumpHeight, gravity);
+		}
 	}
 }
