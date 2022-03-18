@@ -1,7 +1,8 @@
 /*
  * PlayerBehavior.cs
  * Joshua Eagles - 301078033
- * Last Modified: 2022-03-05
+ * Weihao Cai	- 301005651
+ * Last Modified: 2022-03-18
  * 
  * Handles the logic for the player moving around and jumping
  * 
@@ -193,4 +194,6 @@ public class PlayerBehavior : MonoBehaviour
 			velocity.y = CalculateJumpForce(jumpHeight, gravity);
 		}
 	}
+
+
 }

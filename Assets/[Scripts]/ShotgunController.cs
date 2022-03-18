@@ -1,7 +1,8 @@
 /*
  * ShotgunController.cs
  * Joshua Eagles - 301078033
- * Last Modified: 2022-02-12
+ * Weihao Cai	- 301005651
+ * Last Modified: 2022-03-18
  * 
  * Handles the logic for the shotgun, both the knockback blast needed for movement and the ammo system.
  * 
@@ -12,6 +13,7 @@
  * 2022-02-12 - Documentation comments
  * 2022-02-12 - Shotgun SFX
  * 2022-03-06 - Shoot and destroy enemies
+ * 2022-03-18 - Add B Button for shoot
  */
 
 using System.Collections;
@@ -40,6 +42,7 @@ public class ShotgunController : MonoBehaviour
 
 	private AudioSource audioSource;
 
+
 	void Start()
 	{
 		audioSource = GetComponent<AudioSource>();
@@ -47,27 +50,31 @@ public class ShotgunController : MonoBehaviour
 
 	void Update()
 	{
-		// If there's ammo to reload and the timer has completed, refill the shotgun ammo and update the ammo display
-		if (remainingShots < totalShots && Time.time > rechargeTimerStart + rechargeDelayLength)
-		{
-			remainingShots = totalShots;
 
-			UpdateAmmoDisplay(remainingShots);
-			PlayReloadSound();
-		}
+		
 
-		// When you have ammo and click left mouse, give knockback, subtract 1 ammo, and update the ammo display
-		if (Input.GetButtonDown("Fire") && remainingShots > 0)
-		{
-			player.velocity += -player.FacingDirection * knockbackAmount;
+			// If there's ammo to reload and the timer has completed, refill the shotgun ammo and update the ammo display
+			//if (remainingShots < totalShots && Time.time > rechargeTimerStart + rechargeDelayLength)
+			//{
+			//	remainingShots = totalShots;
 
-			rechargeTimerStart = Time.time;
-			remainingShots -= 1;
-			UpdateAmmoDisplay(remainingShots);
-			PlayFireSound();
+			//	UpdateAmmoDisplay(remainingShots);
+			//	PlayReloadSound();
+			//}
 
-			CheckForHitEnemies();
-		}
+			//// When you have ammo and click left mouse, give knockback, subtract 1 ammo, and update the ammo display
+			//if (Input.GetButtonDown("Fire") && remainingShots > 0)
+			//{
+			//	player.velocity += -player.FacingDirection * knockbackAmount;
+
+			//	rechargeTimerStart = Time.time;
+			//	remainingShots -= 1;
+			//	UpdateAmmoDisplay(remainingShots);
+			//	PlayFireSound();
+
+			//	CheckForHitEnemies();
+			//} 
+		
 	}
 
 	// Assign the correct crossHair dot images based on the amount of remaining ammo 
@@ -110,6 +117,31 @@ public class ShotgunController : MonoBehaviour
 		if (isHit && hit.collider.gameObject.CompareTag("Enemy"))
 		{
 			Destroy(hit.collider.gameObject);
+		}
+	}
+
+	public void onBButtonPressed()
+	{
+		// If there's ammo to reload and the timer has completed, refill the shotgun ammo and update the ammo display
+		if (remainingShots < totalShots && Time.time > rechargeTimerStart + rechargeDelayLength)
+		{
+			remainingShots = totalShots;
+
+			UpdateAmmoDisplay(remainingShots);
+			PlayReloadSound();
+		}
+
+		// When you have ammo and click left mouse, give knockback, subtract 1 ammo, and update the ammo display
+		if (Input.GetButtonDown("Fire") && remainingShots > 0)
+		{
+			player.velocity += -player.FacingDirection * knockbackAmount;
+
+			rechargeTimerStart = Time.time;
+			remainingShots -= 1;
+			UpdateAmmoDisplay(remainingShots);
+			PlayFireSound();
+
+			CheckForHitEnemies();
 		}
 	}
 }
