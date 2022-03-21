@@ -86,11 +86,7 @@ public class PlayerBehavior : MonoBehaviour
 		velocity.y = Mathf.Clamp(velocity.y, maximumDownwardVelocity, maximumUpwardVelocity);
 
 		// Get the movement input information and normalize it so diagonals don't make you move fasters
-	    /*Vector2 moveInput = new(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-		moveInput = moveInput.normalized;*/
-
-		//Oncreen Joystick
-		Vector2 moveInput = new(Input.GetAxisRaw("Horizontal")+leftJoystick.Horizontal, Input.GetAxisRaw("Vertical")+leftJoystick.Vertical);
+		Vector2 moveInput = new(leftJoystick.Horizontal, leftJoystick.Vertical);
 		moveInput = moveInput.normalized;
 
 		// Use a different velocity interpolation factor based on the current state of the player (improves movement feel)
@@ -187,13 +183,11 @@ public class PlayerBehavior : MonoBehaviour
 		transform.rotation = Quaternion.Euler(0, saveData.playerRotationY, 0);
 	}
 
-	public void onAButton_Pressed() 
+	public void onJumpButton_Pressed()
 	{
-		if (isGrounded) 
+		if (isGrounded)
 		{
 			velocity.y = CalculateJumpForce(jumpHeight, gravity);
 		}
 	}
-
-
 }

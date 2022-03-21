@@ -21,6 +21,7 @@ public class MedKitController : MonoBehaviour
 		if (playerBehavior != null)
 		{
 			playerBehavior.uiControls.AddMedKit();
+			playerBehavior.uiControls.RecordMedkitCollected(name);
 			Destroy(gameObject);
 		}
 	}

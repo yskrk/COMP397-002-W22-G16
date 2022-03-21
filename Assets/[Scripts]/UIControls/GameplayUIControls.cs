@@ -9,11 +9,11 @@
  * 2022-02-13 - Initial Creation
  * 2022-03-05 - Health Bar Logic + Medkit logic
  * 2022-03-06 - Saving and Loading
+ * 2022-03-20 - Improved Saving and Loading
  */
 
-using System.Collections;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -33,19 +33,23 @@ public class GameplayUIControls : MonoBehaviour
 	private int medKitCount;
 	public TMP_Text medkitDisplayLabel;
 
-	void Update()
+	private List<string> killedEnemyNames = new();
+	private List<string> collectedMedkitNames = new();
+
+	void Start()
 	{
-		// Handle the player pressing the pause button
-		if (Input.GetButtonDown("Pause"))
+		if (PlayerPrefs.GetInt("LoadSavedGame") == 1)
 		{
-			IsPaused = !IsPaused;
-			ChangePausedState(IsPaused);
+			LoadGame();
 		}
 
-		if (Input.GetButtonDown("Medkit"))
-		{
-			UseMedKit();
-		}
+		PlayerPrefs.SetInt("LoadSavedGame", 0);
+	}
+
+	public void OnPauseButton_Pressed()
+	{
+		IsPaused = !IsPaused;
+		ChangePausedState(IsPaused);
 	}
 
 	public void ChangePausedState(bool isPaused)
@@ -54,9 +58,6 @@ public class GameplayUIControls : MonoBehaviour
 		gameplayUIContainer.SetActive(!isPaused);
 		gameplayContainer.SetActive(!isPaused);
 		pauseMenuUIContainer.SetActive(isPaused);
-
-		// Make sure the cursor isn't locked while paused
-		Cursor.lockState = isPaused ? CursorLockMode.None : CursorLockMode.Locked;
 	}
 
 	public void OnResumeButton_Pressed()
@@ -71,7 +72,7 @@ public class GameplayUIControls : MonoBehaviour
 		var playerTransform = playerBehavior.gameObject.transform;
 
 		SaveData saveData = new(playerTransform.position.x, playerTransform.position.y, playerTransform.position.z,
-				playerBehavior.transform.rotation.eulerAngles.y, medKitCount, (int)healthBar.value);
+				playerBehavior.transform.rotation.eulerAngles.y, medKitCount, (int)healthBar.value, collectedMedkitNames.ToArray(), killedEnemyNames.ToArray());
 
 		string serializedSaveData = JsonUtility.ToJson(saveData);
 
@@ -80,21 +81,9 @@ public class GameplayUIControls : MonoBehaviour
 
 	public void OnLoadGameButton_Pressed()
 	{
-		if (!PlayerPrefs.HasKey("SaveData"))
-		{
-			return;
-		}
-
-		var serializedSaveData = PlayerPrefs.GetString("SaveData");
-		var saveData = JsonUtility.FromJson<SaveData>(serializedSaveData);
-
-		var playerBehavior = Resources.FindObjectsOfTypeAll<PlayerBehavior>()[0];
-		playerBehavior.LoadEntity(saveData);
-
-		medKitCount = saveData.medkitInventoryCount;
-		medkitDisplayLabel.text = medKitCount.ToString();
-
-		healthBar.value = saveData.health;
+		// This button should simply reload the scene with the load game flag set, move the load code elsewhere and call it in Start()
+		PlayerPrefs.SetInt("LoadSavedGame", 1);
+		SceneManager.LoadScene("Gameplay");
 	}
 
 	public void OnExitToMenu_Pressed()
@@ -140,6 +129,55 @@ public class GameplayUIControls : MonoBehaviour
 		Heal(100);
 		medkitDisplayLabel.text = medKitCount.ToString();
 	}
+
+	public void LoadGame()
+	{
+		if (!PlayerPrefs.HasKey("SaveData"))
+		{
+			return;
+		}
+
+		var serializedSaveData = PlayerPrefs.GetString("SaveData");
+		var saveData = JsonUtility.FromJson<SaveData>(serializedSaveData);
+
+		var playerBehavior = Resources.FindObjectsOfTypeAll<PlayerBehavior>()[0];
+		playerBehavior.LoadEntity(saveData);
+
+		medKitCount = saveData.medkitInventoryCount;
+		medkitDisplayLabel.text = medKitCount.ToString();
+
+		var enemyRobotPlayerDetections = Resources.FindObjectsOfTypeAll<EnemyRobotPlayerDetection>();
+		foreach (var enemyRobotPlayerDetector in enemyRobotPlayerDetections)
+		{
+			if (Array.Exists<string>(saveData.killedEnemyNames, enemyName => enemyName == enemyRobotPlayerDetector.transform.parent.gameObject.name))
+			{
+				Destroy(enemyRobotPlayerDetector.transform.parent.gameObject);
+			}
+		}
+		this.killedEnemyNames = new List<string>(saveData.killedEnemyNames);
+
+		var medkits = Resources.FindObjectsOfTypeAll<MedKitController>();
+		foreach (var medkit in medkits)
+		{
+			if (Array.Exists<string>(saveData.collectedMedkitNames, medkitName => medkitName == medkit.name))
+			{
+				Destroy(medkit.gameObject);
+			}
+		}
+		this.collectedMedkitNames = new List<string>(saveData.collectedMedkitNames);
+
+		healthBar.value = saveData.health;
+	}
+
+	public void RecordEnemyKilled(string enemyName)
+	{
+		killedEnemyNames.Add(enemyName);
+	}
+
+	public void RecordMedkitCollected(string medkitName)
+	{
+		collectedMedkitNames.Add(medkitName);
+	}
 }
 
 public class SaveData
@@ -150,8 +188,10 @@ public class SaveData
 	public float playerRotationY;
 	public int medkitInventoryCount;
 	public int health;
+	public string[] collectedMedkitNames;
+	public string[] killedEnemyNames;
 
-	public SaveData(float playerPositionX, float playerPositionY, float playerPositionZ, float playerRotationY, int medkitInventoryCount, int health)
+	public SaveData(float playerPositionX, float playerPositionY, float playerPositionZ, float playerRotationY, int medkitInventoryCount, int health, string[] collectedMedkitNames, string[] killedEnemyNames)
 	{
 		this.playerPositionX = playerPositionX;
 		this.playerPositionY = playerPositionY;
@@ -159,5 +199,7 @@ public class SaveData
 		this.playerRotationY = playerRotationY;
 		this.medkitInventoryCount = medkitInventoryCount;
 		this.health = health;
+		this.collectedMedkitNames = collectedMedkitNames;
+		this.killedEnemyNames = killedEnemyNames;
 	}
 }
