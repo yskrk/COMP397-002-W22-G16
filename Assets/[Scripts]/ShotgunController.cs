@@ -31,6 +31,8 @@ public class ShotgunController : MonoBehaviour
 	public Texture crosshairDotImage;
 	public Texture crosshairDotFilledImage;
 
+	public GameObject shellSpawner;
+
 	public AudioClip fireSound;
 	public AudioClip reloadSound;
 
@@ -42,6 +44,10 @@ public class ShotgunController : MonoBehaviour
 	public float rechargeDelayLength = 3f;
 
 	private AudioSource audioSource;
+
+	// // check if shotgun shells are actice
+	// private bool isActiveShell = false;
+	// private float shellTimer = 0;
 
 	void Start()
 	{
@@ -76,6 +82,10 @@ public class ShotgunController : MonoBehaviour
 			default:
 				crosshairDot1.texture = crosshairDotImage;
 				crosshairDot2.texture = crosshairDotImage;
+
+				// Eject shotgun shell
+				shellSpawner.GetComponent<ShellSpawner>().SpawnShell();
+				shellSpawner.GetComponent<ShellSpawner>().SpawnShell();
 				break;
 		}
 	}

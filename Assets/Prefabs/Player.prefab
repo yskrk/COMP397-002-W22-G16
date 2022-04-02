@@ -204,8 +204,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76d1486a390780fefb7c6d7c6362ef5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseSensitivity: 150
+  lookSensitivity: 10
   playerTransform: {fileID: 2337048250096090447}
+  rightJoystick: {fileID: 0}
 --- !u!1 &3851597046686022979
 GameObject:
   m_ObjectHideFlags: 0
@@ -429,6 +430,7 @@ MonoBehaviour:
   jumpSound: {fileID: 8300000, guid: 7f4bb31f06728be4ba0bed5c2641896c, type: 3}
   landSound: {fileID: 8300000, guid: 5e94f3d51023c5446b59f52c71e0cade, type: 3}
   uiControls: {fileID: 0}
+  leftJoystick: {fileID: 0}
 --- !u!82 &1580949692
 AudioSource:
   m_ObjectHideFlags: 0
@@ -721,6 +723,7 @@ MonoBehaviour:
   crosshairDot2: {fileID: 0}
   crosshairDotImage: {fileID: 2800000, guid: 350e1f73b9e48ad54bf7d8fa6993df3a, type: 3}
   crosshairDotFilledImage: {fileID: 2800000, guid: 2c6a6bb19bfe5740c9445c0cbd4eeba8, type: 3}
+  shellSpawner: {fileID: 0}
   fireSound: {fileID: 8300000, guid: af66162561d2eed40ad49268cab318bb, type: 3}
   reloadSound: {fileID: 8300000, guid: 06ada5590eba8d6489b36c6f3c54ff78, type: 3}
   knockbackAmount: 30
