@@ -2,15 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectPooler : MonoBehaviour
+public class PelletPooler : MonoBehaviour
 {
     // singleton
     [SerializeField] private List<GameObject> pools;
-    [SerializeField] private GameObject shell;
-    [SerializeField] private int amount = 8;
+    [SerializeField] private GameObject obj;
+    [SerializeField] private int amount = 0;
 
     // singleton
-    public static ObjectPooler _instance;
+    public static PelletPooler _instance;
     private void Awake()
     {
         _instance = this;
@@ -24,7 +24,7 @@ public class ObjectPooler : MonoBehaviour
 
         for (int i = 0; i < amount; i++)
         {
-            tmp = Instantiate(shell);
+            tmp = Instantiate(obj);
             tmp.SetActive(false);
             pools.Add(tmp);
         }

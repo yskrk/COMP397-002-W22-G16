@@ -32,6 +32,7 @@ public class ShotgunController : MonoBehaviour
 	public Texture crosshairDotFilledImage;
 
 	public GameObject shellSpawner;
+	public GameObject pelletSpawner;
 
 	public AudioClip fireSound;
 	public AudioClip reloadSound;
@@ -44,10 +45,6 @@ public class ShotgunController : MonoBehaviour
 	public float rechargeDelayLength = 3f;
 
 	private AudioSource audioSource;
-
-	// // check if shotgun shells are actice
-	// private bool isActiveShell = false;
-	// private float shellTimer = 0;
 
 	void Start()
 	{
@@ -126,6 +123,7 @@ public class ShotgunController : MonoBehaviour
 			remainingShots -= 1;
 			UpdateAmmoDisplay(remainingShots);
 			PlayFireSound();
+			pelletSpawner.GetComponent<PelletSpawner>().FirePellet();
 
 			CheckForHitEnemies();
 		}
