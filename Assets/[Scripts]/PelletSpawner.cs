@@ -14,11 +14,17 @@ public class PelletSpawner : MonoBehaviour
         for (int i = 0; i < pelletAmount; i++)
         {
             pellet = PelletPooler._instance.GetPooledObject();
-            pellet.transform.position = this.transform.position;
-            pellet.transform.rotation = this.transform.rotation;
-            pellet.transform.rotation = Quaternion.RotateTowards(pellet.transform.rotation, pellet.transform.rotation, spreadAngle);
-            pellet.GetComponent<Rigidbody>().AddForce(this.transform.position * pelletVelocity);
-            pellet.SetActive(true);
+            if (pellet != null)
+            {
+                // Ajust position and rotation to under shotgun
+                pellet.transform.position = this.transform.position;
+                pellet.transform.rotation = this.transform.rotation;
+
+                // Make pellet spreading ***Continuing***
+                pellet.transform.rotation = Quaternion.RotateTowards(pellet.transform.rotation, pellet.transform.rotation, spreadAngle);
+                pellet.GetComponent<Rigidbody>().AddForce(this.transform.position * pelletVelocity);
+                pellet.SetActive(true);
+            }
         }
     }
 }

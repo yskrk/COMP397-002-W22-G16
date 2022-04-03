@@ -45,5 +45,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pools: []
-  obj: {fileID: 0}
-  amount: 0
+  obj: {fileID: 399378856653571470, guid: 56f69823482e50c40bcfcb20442d422b, type: 3}
+  amount: 50
