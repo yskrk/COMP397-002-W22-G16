@@ -16,11 +16,14 @@ public class PelletSpawner : MonoBehaviour
             pellet = PelletPooler._instance.GetPooledObject();
             if (pellet != null)
             {
-                // Ajust position and rotation to under shotgun
+                // Ajust position and rotation to muzzle
                 pellet.transform.position = this.transform.position;
                 pellet.transform.rotation = this.transform.rotation;
 
-                // Make pellet spreading ***Continuing***
+                /*
+                    NEED FIX
+                */
+                // Make pellet spreading
                 pellet.transform.rotation = Quaternion.RotateTowards(pellet.transform.rotation, pellet.transform.rotation, spreadAngle);
                 pellet.GetComponent<Rigidbody>().AddForce(this.transform.position * pelletVelocity);
                 pellet.SetActive(true);
