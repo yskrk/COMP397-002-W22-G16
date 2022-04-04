@@ -2,7 +2,8 @@
  * ShotgunController.cs
  * Joshua Eagles - 301078033
  * Weihao Cai	- 301005651
- * Last Modified: 2022-03-20
+ * Yusuke Kuroki - 301137023
+ * Last Modified: 2022-04-03
  * 
  * Handles the logic for the shotgun, both the knockback blast needed for movement and the ammo system.
  * 
@@ -15,6 +16,7 @@
  * 2022-03-06 - Shoot and destroy enemies
  * 2022-03-18 - Add B Button for shoot
  * 2022-03-20 - Adjust touch screen shooting logic
+ * 2022-04-03 - Ejected Shell logic
  */
 
 using System.Collections;
@@ -45,10 +47,6 @@ public class ShotgunController : MonoBehaviour
 
 	private AudioSource audioSource;
 
-	// // check if shotgun shells are actice
-	// private bool isActiveShell = false;
-	// private float shellTimer = 0;
-
 	void Start()
 	{
 		audioSource = GetComponent<AudioSource>();
@@ -59,6 +57,8 @@ public class ShotgunController : MonoBehaviour
 		// If there's ammo to reload and the timer has completed, refill the shotgun ammo and update the ammo display
 		if (remainingShots < totalShots && Time.time > rechargeTimerStart + rechargeDelayLength)
 		{
+			SpawnEjectedPellets(totalShots - remainingShots);
+
 			remainingShots = totalShots;
 
 			UpdateAmmoDisplay(remainingShots);
@@ -82,10 +82,6 @@ public class ShotgunController : MonoBehaviour
 			default:
 				crosshairDot1.texture = crosshairDotImage;
 				crosshairDot2.texture = crosshairDotImage;
-
-				// Eject shotgun shell
-				shellSpawner.GetComponent<ShellSpawner>().SpawnShell();
-				shellSpawner.GetComponent<ShellSpawner>().SpawnShell();
 				break;
 		}
 	}
@@ -102,6 +98,15 @@ public class ShotgunController : MonoBehaviour
 	{
 		audioSource.clip = reloadSound;
 		audioSource.Play();
+	}
+
+	// Spawn some visual ejected shotgun shells
+	private void SpawnEjectedPellets(int numberToSpawn)
+	{
+		for (int i = 0; i < numberToSpawn; i++)
+		{
+			shellSpawner.GetComponent<ShellSpawner>().SpawnShell();
+		}
 	}
 
 	private void CheckForHitEnemies()

@@ -1,19 +1,37 @@
+/*
+ * ShellBehavior.cs
+ * Joshua Eagles - 301078033
+ * Yusuke Kuroki - 301137023
+ * Last Modified: 2022-04-03
+ * 
+ * Handles the despawning logic for the ejected shells
+ * 
+ * Revision History:
+ * 2022-04-03 - Initial Creation
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ShellBehaviour : MonoBehaviour
 {
-    private float timer = 0.0f;
+	private float aliveStartTime = -1f;
 
-    void Update()
-    {
-        timer += Time.deltaTime;
+	private const float ALIVE_TIME = 10f;
 
-        if (timer > 5.0f)
-        {
-            this.gameObject.SetActive(false);
-            timer = 0.0f;
-        }
-    }
+	void Update()
+	{
+		// Hasn't been instantiated
+		if (aliveStartTime == -1)
+		{
+			aliveStartTime = Time.time;
+		}
+
+		if (Time.time - aliveStartTime > ALIVE_TIME)
+		{
+			aliveStartTime = -1;
+			gameObject.SetActive(false);
+		}
+	}
 }
