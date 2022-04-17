@@ -1,3 +1,4 @@
+// using System.Drawing;	delete thid if it is not needed
 /*
  * PlayerBehavior.cs
  * Joshua Eagles - 301078033
@@ -55,6 +56,9 @@ public class PlayerBehavior : MonoBehaviour
 
 	[Header("OnScreen Controls")]
 	public Joystick leftJoystick;
+
+	[Header("Achievement")]
+	public Point point;
 
 	// Returns a vector that points in the direction the player is looking, factoring in the camera as well
 	public Vector3 FacingDirection
@@ -131,6 +135,12 @@ public class PlayerBehavior : MonoBehaviour
 
 		// Apply movement, rotate the velocity based on the players facing angle before applying it
 		characterController.Move(RotateHorizontalVelocity(transform, velocity) * Time.deltaTime);
+
+		// Get Achievement to do shooting while junping
+		if (!isGrounded && Input.GetMouseButtonDown(0))
+		{
+			point.GetComponent<Point>().isShootWihtJump();
+		}
 	}
 
 	// Debug draw used to help visualize the ground check

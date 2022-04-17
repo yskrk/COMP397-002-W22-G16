@@ -304,6 +304,7 @@ GameObject:
   - component: {fileID: 2101990476980917490}
   - component: {fileID: 6505996268925091773}
   - component: {fileID: 1580949692}
+  - component: {fileID: 8292200853389578681}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -431,6 +432,7 @@ MonoBehaviour:
   landSound: {fileID: 8300000, guid: 5e94f3d51023c5446b59f52c71e0cade, type: 3}
   uiControls: {fileID: 0}
   leftJoystick: {fileID: 0}
+  point: {fileID: 8292200853389578681}
 --- !u!82 &1580949692
 AudioSource:
   m_ObjectHideFlags: 0
@@ -527,6 +529,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &8292200853389578681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4587817573362429479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d9f175c446a6f549929d136c19fba59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pName: Floating with your shotgun
 --- !u!1001 &444983691313604942
 PrefabInstance:
   m_ObjectHideFlags: 0
