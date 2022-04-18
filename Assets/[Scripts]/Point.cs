@@ -4,17 +4,29 @@ using UnityEngine;
 
 public class Point : Subject
 {
-    [SerializeField] private string pName;
+	public void PlayerJumped()
+	{
+		Notify("playerJumped", NotificationType.AchievementUnlocked);
+	}
 
-    // gettin MedKit
-    private void OnTriggerEnter(Collider other)
-    {
-        Notify(pName, NotificationType.AchievementUnlocked);
-    }
+	// launching by shotgun
+	public void ShotgunFired()
+	{
+		Notify("shotgunFired", NotificationType.AchievementUnlocked);
+	}
 
-    // launching by shotgun
-    public void isShootWihtJump()
-    {
-        Notify(pName, NotificationType.AchievementUnlocked);
-    }
+	public void EnemyKilled()
+	{
+		Notify("enemyKilled", NotificationType.AchievementUnlocked);
+	}
+
+	public void MedkitCollected()
+	{
+		Notify("medkitCollected", NotificationType.AchievementUnlocked);
+	}
+
+	public void HealedWithMedkit()
+	{
+		Notify("healedWithMedkit", NotificationType.AchievementUnlocked);
+	}
 }

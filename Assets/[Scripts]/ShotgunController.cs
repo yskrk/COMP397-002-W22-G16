@@ -116,6 +116,7 @@ public class ShotgunController : MonoBehaviour
 		{
 			player.uiControls.RecordEnemyKilled(hit.collider.gameObject.name);
 			Destroy(hit.collider.gameObject);
+			player.gameObject.GetComponent<Point>().EnemyKilled();
 		}
 	}
 
@@ -133,6 +134,8 @@ public class ShotgunController : MonoBehaviour
 			PlayFireSound();
 
 			CheckForHitEnemies();
+
+			player.gameObject.GetComponent<Point>().ShotgunFired();
 		}
 	}
 }

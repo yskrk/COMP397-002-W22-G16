@@ -1,4 +1,3 @@
-// using System.Drawing;	delete thid if it is not needed
 /*
  * PlayerBehavior.cs
  * Joshua Eagles - 301078033
@@ -56,9 +55,6 @@ public class PlayerBehavior : MonoBehaviour
 
 	[Header("OnScreen Controls")]
 	public Joystick leftJoystick;
-
-	[Header("Achievement")]
-	public Point point;
 
 	// Returns a vector that points in the direction the player is looking, factoring in the camera as well
 	public Vector3 FacingDirection
@@ -135,12 +131,6 @@ public class PlayerBehavior : MonoBehaviour
 
 		// Apply movement, rotate the velocity based on the players facing angle before applying it
 		characterController.Move(RotateHorizontalVelocity(transform, velocity) * Time.deltaTime);
-
-		// Get Achievement to do shooting while junping
-		if (!isGrounded && Input.GetMouseButtonDown(0))
-		{
-			point.GetComponent<Point>().isShootWihtJump();
-		}
 	}
 
 	// Debug draw used to help visualize the ground check
@@ -193,11 +183,19 @@ public class PlayerBehavior : MonoBehaviour
 		transform.rotation = Quaternion.Euler(0, saveData.playerRotationY, 0);
 	}
 
-	public void onJumpButton_Pressed()
+	public void OnJumpButton_Pressed()
 	{
 		if (isGrounded)
 		{
 			velocity.y = CalculateJumpForce(jumpHeight, gravity);
+
+			GetComponent<Point>().PlayerJumped();
+
+			// Only play jump sound if landing sound has played most of the clip already
+			if (audioSource.clip != landSound || audioSource.time > 0.4f || !audioSource.isPlaying)
+			{
+				PlayJumpSound();
+			}
 		}
 	}
 }

@@ -25,6 +25,10 @@ public class GameplayUIControls : MonoBehaviour
 	public GameObject gameplayContainer;
 	public GameObject pauseMenuUIContainer;
 
+	public Achevement achievementSystem;
+
+	public PlayerBehavior playerBehavior;
+
 	public bool IsPaused { get; private set; } = false;
 
 	public Slider healthBar;
@@ -57,7 +61,8 @@ public class GameplayUIControls : MonoBehaviour
 		// Enable the correct UI container (and disable the game stuff if needed)
 		gameplayUIContainer.SetActive(!isPaused);
 		gameplayContainer.SetActive(!isPaused);
-		pauseMenuUIContainer.SetActive(isPaused);
+		// using scale instead of active so observers on the pause screen still function
+		pauseMenuUIContainer.transform.localScale = isPaused ? Vector3.one : Vector3.zero;
 	}
 
 	public void OnResumeButton_Pressed()
@@ -77,6 +82,10 @@ public class GameplayUIControls : MonoBehaviour
 		string serializedSaveData = JsonUtility.ToJson(saveData);
 
 		PlayerPrefs.SetString("SaveData", serializedSaveData);
+
+		AchievementSaveData achievementSaveData = achievementSystem.achievementSaveData;
+		string serializedAchievementSaveData = JsonUtility.ToJson(achievementSaveData);
+		PlayerPrefs.SetString("AchievementSaveData", serializedAchievementSaveData);
 	}
 
 	public void OnLoadGameButton_Pressed()
@@ -126,6 +135,12 @@ public class GameplayUIControls : MonoBehaviour
 			return;
 		}
 		medKitCount--;
+
+		if (healthBar.value < 100)
+		{
+			playerBehavior.gameObject.GetComponent<Point>().HealedWithMedkit();
+		}
+
 		Heal(100);
 		medkitDisplayLabel.text = medKitCount.ToString();
 	}
@@ -167,6 +182,10 @@ public class GameplayUIControls : MonoBehaviour
 		this.collectedMedkitNames = new List<string>(saveData.collectedMedkitNames);
 
 		healthBar.value = saveData.health;
+
+		var serializedAchievementSaveData = PlayerPrefs.GetString("AchievementSaveData");
+		var achievementSaveData = JsonUtility.FromJson<AchievementSaveData>(serializedAchievementSaveData);
+		achievementSystem.achievementSaveData = achievementSaveData;
 	}
 
 	public void RecordEnemyKilled(string enemyName)

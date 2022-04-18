@@ -23,6 +23,7 @@ public class MedKitController : MonoBehaviour
 			playerBehavior.uiControls.AddMedKit();
 			playerBehavior.uiControls.RecordMedkitCollected(name);
 			Destroy(gameObject);
+			playerBehavior.gameObject.GetComponent<Point>().MedkitCollected();
 		}
 	}
 }
